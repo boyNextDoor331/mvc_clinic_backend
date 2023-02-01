@@ -1,0 +1,13 @@
+﻿@using Clinic.Controllers
+@model IEnumerable<Client>
+@{
+    ViewData["Title"] = "Home Page";
+}
+
+<h3>All Clients</h3>
+<table class="table">
+    @foreach (Client p in Model)
+    {
+        <tr><td>@p.Name</td><td>@p.Surname</td><td>@p.Gender</td><td>@p.Age</td><td>@p.Email</td></tr>
+    }
+</table>
