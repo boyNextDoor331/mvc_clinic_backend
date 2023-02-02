@@ -16,16 +16,24 @@ build_property.GenerateRazorMetadataSourceChecksumAttributes =
 build_property.MSBuildProjectDirectory = C:\Users\User\source\repos\Clinic\Clinic
 build_property._RazorSourceGeneratorDebug = 
 
+[C:/Users/User/source/repos/Clinic/Clinic/Views/Client/AllClientsTable.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQ2xpZW50XEFsbENsaWVudHNUYWJsZS5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/User/source/repos/Clinic/Clinic/Views/Client/ClientInformation.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQ2xpZW50XENsaWVudEluZm9ybWF0aW9uLmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
 [C:/Users/User/source/repos/Clinic/Clinic/Views/Client/CreateClient.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQ2xpZW50XENyZWF0ZUNsaWVudC5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/User/source/repos/Clinic/Clinic/Views/Client/GetList.cshtml]
-build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQ2xpZW50XEdldExpc3QuY3NodG1s
+[C:/Users/User/source/repos/Clinic/Clinic/Views/Client/FindClient.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQ2xpZW50XEZpbmRDbGllbnQuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/User/source/repos/Clinic/Clinic/Views/Client/Index.cshtml]
-build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQ2xpZW50XEluZGV4LmNzaHRtbA==
+[C:/Users/User/source/repos/Clinic/Clinic/Views/Client/RegistrationForm.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQ2xpZW50XFJlZ2lzdHJhdGlvbkZvcm0uY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
 [C:/Users/User/source/repos/Clinic/Clinic/Views/Home/Index.cshtml]

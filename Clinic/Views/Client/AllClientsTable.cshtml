@@ -6,6 +6,9 @@
 
 <h3>All Clients</h3>
 <table class="table">
+    <tr><td><strong>Name</strong></td><td><strong>Surname</strong></td>
+        <td><strong>Gender</strong></td><td><strong>Age</strong></td>
+        <td><strong>Email</strong></td></tr>
     @foreach (Client p in Model)
     {
         <tr><td>@p.Name</td><td>@p.Surname</td><td>@p.Gender</td><td>@p.Age</td><td>@p.Email</td></tr>
