@@ -34,7 +34,7 @@ namespace Clinic.Controllers
         [HttpGet]
         public IActionResult Find()
         {
-            return View("FindClientS");
+            return View("FindClient");
         }
 
         [HttpGet]
