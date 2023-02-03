@@ -1,6 +1,5 @@
 ﻿using Clinic.Models;
 using Microsoft.AspNetCore.Mvc;
-using System.Text;
 using Newtonsoft.Json;
 
 namespace Clinic.Controllers
@@ -22,10 +21,9 @@ namespace Clinic.Controllers
         {
             var user = new Client(name, surname, age, gender, email);
 
-            using (var fileStream = new FileStream("Users.bin", FileMode.Append, FileAccess.Write, FileShare.None))
+            using (var fileStream = new StreamWriter("Users.bin", true))
             {
-                byte[] buffer = Encoding.Default.GetBytes(JsonConvert.SerializeObject(user)+"\n");
-                fileStream.WriteAsync(buffer, 0, buffer.Length);
+                fileStream.WriteLineAsync(JsonConvert.SerializeObject(user));
             }
 
             return View("CreateClient", user);
@@ -58,7 +56,7 @@ namespace Clinic.Controllers
         [HttpPost]
         public IActionResult GetSpecific([FromForm] string name, [FromForm] string surname)
         {
-            var list = new List<Client>();
+            var list = new List<Client>(); 
             using (var fileStream = new StreamReader("Users.bin"))
             {
                 while (!fileStream.EndOfStream)
@@ -84,28 +82,32 @@ namespace Clinic.Controllers
         public IActionResult DeleteSpecific([FromForm] string id)
         {
             var list = new List<Client>();
-            using (var fileStream = new StreamReader("Users.bin"))
+            using (var fileStreamRead = new StreamReader("Users.bin"))
             {
-                while (!fileStream.EndOfStream)
+                while (!fileStreamRead.EndOfStream)
                 {
-                    var stream = fileStream.ReadLine();
+                    var stream = fileStreamRead.ReadLine();
                     if (!string.IsNullOrEmpty(stream))
                     {
                         list.Add(JsonConvert.DeserializeObject<Client>(stream));
                     }
                 }
             }
+            using (var fileStreamClear = new FileStream("Users.bin", FileMode.Truncate)) 
+            { 
+
+            }
+            
             list.Remove(list.Find(client => client.Id == id));
 
-            using (var fileStream = new FileStream("Users.bin", FileMode.Open, FileAccess.Write, FileShare.None))
+            using (var fileStreamWrite = new StreamWriter("Users.bin", true))
             {
                 foreach(var client in list)
                 {
-                    byte[] buffer = Encoding.Default.GetBytes(JsonConvert.SerializeObject(client + "\n"));
-                    fileStream.WriteAsync(buffer, 0, buffer.Length);
+                    fileStreamWrite.WriteLineAsync(JsonConvert.SerializeObject(client));
                 }
             }
-            return Ok("Nice");
+            return View("SuccessDeleting");
         }
     }
 }
