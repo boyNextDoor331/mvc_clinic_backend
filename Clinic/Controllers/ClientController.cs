@@ -28,7 +28,7 @@ namespace Clinic.Controllers
                 fileStream.WriteAsync(buffer, 0, buffer.Length);
             }
 
-            return View(user);
+            return View("CreateClient", user);
         }
 
         [HttpGet]
@@ -73,6 +73,39 @@ namespace Clinic.Controllers
             return View("ClientInformation", list.Find(client => client.IsClientNeeded(name, surname)));
         }
 
+        [HttpGet]
+        public IActionResult Delete()
+        {
+            return View("DeletingForm");
+        }
 
+
+        [HttpPost]
+        public IActionResult DeleteSpecific([FromForm] string id)
+        {
+            var list = new List<Client>();
+            using (var fileStream = new StreamReader("Users.bin"))
+            {
+                while (!fileStream.EndOfStream)
+                {
+                    var stream = fileStream.ReadLine();
+                    if (!string.IsNullOrEmpty(stream))
+                    {
+                        list.Add(JsonConvert.DeserializeObject<Client>(stream));
+                    }
+                }
+            }
+            list.Remove(list.Find(client => client.Id == id));
+
+            using (var fileStream = new FileStream("Users.bin", FileMode.Open, FileAccess.Write, FileShare.None))
+            {
+                foreach(var client in list)
+                {
+                    byte[] buffer = Encoding.Default.GetBytes(JsonConvert.SerializeObject(client + "\n"));
+                    fileStream.WriteAsync(buffer, 0, buffer.Length);
+                }
+            }
+            return Ok("Nice");
+        }
     }
 }

@@ -1,0 +1,25 @@
+﻿
+<!DOCTYPE html>
+<html>
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+</head>
+<body>
+    <form method="post" asp-controller="Client" asp-action="DeleteSpecific">
+        <div class="container">
+            <h1>Delete</h1>
+            <p>Please fill in the field to delete the client</p>
+            <hr>
+
+            <label for="id"><b>ID</b></label>
+            <input type="text" placeholder="Enter ID" name="id" id="id" required>
+
+
+            <hr>
+
+            <button type="submit" class="registerbtn">Delete</button>
+        </div>
+    </form>
+
+</body>
+</html>
