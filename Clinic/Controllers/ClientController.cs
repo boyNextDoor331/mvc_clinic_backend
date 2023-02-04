@@ -1,4 +1,5 @@
-﻿using Clinic.Models;
+﻿using Clinic.Engine;
+using Clinic.Models;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
 
@@ -6,6 +7,9 @@ namespace Clinic.Controllers
 {
     public class ClientController : Controller
     {
+        private const string FileName = "Users";
+        private const string BackupName = "BackupUsers";
+
         [HttpGet]
         public IActionResult Register()
         {
@@ -21,10 +25,7 @@ namespace Clinic.Controllers
         {
             var user = new Client(name, surname, age, gender, email);
 
-            using (var fileStream = new StreamWriter("Users.bin", true))
-            {
-                fileStream.WriteLineAsync(JsonConvert.SerializeObject(user));
-            }
+            DataManager.Write(user, FileName);
 
             return View("CreateClient", user);
         }
@@ -39,35 +40,15 @@ namespace Clinic.Controllers
         public IActionResult GetAll()
         {
             var list = new List<Client>();
-            using (var fileStream = new StreamReader("Users.bin"))
-            {
-                while (!fileStream.EndOfStream)
-                {
-                    var stream = fileStream.ReadLine();
-                    if(!string.IsNullOrEmpty(stream))
-                    {
-                        list.Add(JsonConvert.DeserializeObject<Client>(stream));
-                    }
-                }
-            }
+            DataManager.Read(list, FileName);
             return View("AllClientsTable", list);
         }
 
         [HttpPost]
         public IActionResult GetSpecific([FromForm] string name, [FromForm] string surname)
         {
-            var list = new List<Client>(); 
-            using (var fileStream = new StreamReader("Users.bin"))
-            {
-                while (!fileStream.EndOfStream)
-                {
-                    var stream = fileStream.ReadLine();
-                    if (!string.IsNullOrEmpty(stream))
-                    {
-                        list.Add(JsonConvert.DeserializeObject<Client>(stream));
-                    }
-                }
-            }
+            var list = new List<Client>();
+            DataManager.Read(list, FileName);
             return View("ClientInformation", list.Find(client => client.IsClientNeeded(name, surname)));
         }
 
@@ -82,31 +63,17 @@ namespace Clinic.Controllers
         public IActionResult DeleteSpecific([FromForm] string id)
         {
             var list = new List<Client>();
-            using (var fileStreamRead = new StreamReader("Users.bin"))
+            DataManager.Read(list, FileName);
+            try
             {
-                while (!fileStreamRead.EndOfStream)
-                {
-                    var stream = fileStreamRead.ReadLine();
-                    if (!string.IsNullOrEmpty(stream))
-                    {
-                        list.Add(JsonConvert.DeserializeObject<Client>(stream));
-                    }
-                }
+                DataManager.Truncate(FileName);
             }
-            using (var fileStreamClear = new FileStream("Users.bin", FileMode.Truncate)) 
-            { 
-
-            }
-            
-            list.Remove(list.Find(client => client.Id == id));
-
-            using (var fileStreamWrite = new StreamWriter("Users.bin", true))
+            finally
             {
-                foreach(var client in list)
-                {
-                    fileStreamWrite.WriteLineAsync(JsonConvert.SerializeObject(client));
-                }
+                DataManager.Write(list, BackupName);
             }
+            list.Remove(list.Find(client => client.IsClientNeeded(id)));
+            DataManager.Write(list, FileName);
             return View("SuccessDeleting");
         }
     }

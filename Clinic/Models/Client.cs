@@ -26,5 +26,7 @@
             if(Name == name && Surname == surname) return true;
             return false;
         }
+        public bool IsClientNeeded(string id) => Id== id ? true : false;
+        
     }
 }
