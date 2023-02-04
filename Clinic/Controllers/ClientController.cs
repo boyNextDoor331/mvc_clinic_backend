@@ -70,11 +70,16 @@ namespace Clinic.Controllers
             }
             finally
             {
-                DataManager.Write(list, BackupName);
+                DataManager.Write(list, BackupName, true);
             }
             list.Remove(list.Find(client => client.IsClientNeeded(id)));
-            DataManager.Write(list, StorageName);
+            DataManager.Write(list, StorageName, false);
             return View("SuccessDeleting");
         }
     }
 }
+
+
+
+
+

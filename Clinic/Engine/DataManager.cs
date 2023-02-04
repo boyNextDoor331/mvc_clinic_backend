@@ -5,13 +5,27 @@ namespace Clinic.Engine
 {
     public class DataManager
     {
-        public static void Write(List<Client> data, string fileName)
+        public static void Write(List<Client> data, string fileName, bool isBackup)
         {
-            using (var fileStream = new StreamWriter($"{fileName}.bin", true))
+            if (isBackup)
             {
-                foreach (var client in data)
+                using (var fileStream = new StreamWriter($"{fileName}.bin", true))
                 {
-                    fileStream.WriteLineAsync(JsonConvert.SerializeObject(client));
+                    fileStream.WriteLineAsync($"LOG:{DateTime.Now}");
+                    foreach (var client in data)
+                    {
+                        fileStream.WriteLineAsync(JsonConvert.SerializeObject(client));
+                    }
+                }
+            }
+            else
+            {
+                using (var fileStream = new StreamWriter($"{fileName}.bin", true))
+                {
+                    foreach (var client in data)
+                    {
+                        fileStream.WriteLineAsync(JsonConvert.SerializeObject(client));
+                    }
                 }
             }
         }
