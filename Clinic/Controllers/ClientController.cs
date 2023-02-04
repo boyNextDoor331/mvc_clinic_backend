@@ -7,7 +7,7 @@ namespace Clinic.Controllers
 {
     public class ClientController : Controller
     {
-        private const string FileName = "Users";
+        private const string StorageName = "Users";
         private const string BackupName = "BackupUsers";
 
         [HttpGet]
@@ -25,7 +25,7 @@ namespace Clinic.Controllers
         {
             var user = new Client(name, surname, age, gender, email);
 
-            DataManager.Write(user, FileName);
+            DataManager.Write(user, StorageName);
 
             return View("CreateClient", user);
         }
@@ -40,7 +40,7 @@ namespace Clinic.Controllers
         public IActionResult GetAll()
         {
             var list = new List<Client>();
-            DataManager.Read(list, FileName);
+            DataManager.Read(list, StorageName);
             return View("AllClientsTable", list);
         }
 
@@ -48,7 +48,7 @@ namespace Clinic.Controllers
         public IActionResult GetSpecific([FromForm] string name, [FromForm] string surname)
         {
             var list = new List<Client>();
-            DataManager.Read(list, FileName);
+            DataManager.Read(list, StorageName);
             return View("ClientInformation", list.Find(client => client.IsClientNeeded(name, surname)));
         }
 
@@ -63,17 +63,17 @@ namespace Clinic.Controllers
         public IActionResult DeleteSpecific([FromForm] string id)
         {
             var list = new List<Client>();
-            DataManager.Read(list, FileName);
+            DataManager.Read(list, StorageName);
             try
             {
-                DataManager.Truncate(FileName);
+                DataManager.Truncate(StorageName);
             }
             finally
             {
                 DataManager.Write(list, BackupName);
             }
             list.Remove(list.Find(client => client.IsClientNeeded(id)));
-            DataManager.Write(list, FileName);
+            DataManager.Write(list, StorageName);
             return View("SuccessDeleting");
         }
     }
